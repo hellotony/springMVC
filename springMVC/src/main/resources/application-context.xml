@@ -15,7 +15,62 @@
 	<context:annotation-config />
 	<!-- 让项目扫描响应的包 -->
     <context:component-scan base-package="com" />
+    <!-- 数据库配置文件 -->
+	<bean
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="locations" value="classpath:config.properties"></property>
+	</bean>
+	
+	<!-- 配置数据源        BEGIN-->
+	<bean id="mysql_DataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+		<property name="driverClassName" value="${jdbc.mysql.driverClassName}" />
+		<property name="url" value="${jdbc.mysql.url}" />
+		<property name="username" value="${jdbc.mysql.username}" />
+		<property name="password" value="${jdbc.mysql.password}" />
+		<!-- <property name="maxActive" value="${mysql.maxActive}" />
+		<property name="initialSize" value="${mysql.initialSize}" />
+		<property name="maxWait" value="${mysql.maxWait}" />
+		<property name="maxIdle" value="${mysql.maxIdle}" />
+		<property name="minIdle" value="${mysql.minIdle}" />
+		<property name="removeAbandoned" value="${mysql.removeAbandoned}" />
+		<property name="removeAbandonedTimeout" value="${mysql.removeAbandonedTimeout}" />
+		<property name="logAbandoned" value="${mysql.logAbandoned}" />
+		<property name="testOnBorrow" value="false" />
+		<property name="testWhileIdle" value="${mysql.testWhileIdle}" />
+		<property name="timeBetweenEvictionRunsMillis" value="${mysql.timeBetweenEvictionRunsMillis}" />
+		<property name="validationQuery" value="${mysql.validationQuery}" /> -->
+	</bean>
+<!-- 数据源配置跟踪   2 -->
+	<bean id="mysql_SqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="mysql_DataSource" />
+		<property name="configLocation" value="classpath:SqlMapperConfig.xml" />
+	</bean>
+	
+	<!-- 数据源配置跟踪 3 -->
+	<bean id="mysql_SqlSession" class="org.mybatis.spring.SqlSessionTemplate">
+		<constructor-arg index="0" ref="mysql_SqlSessionFactory" />
+	</bean>
+    <!-- 数据源配置	  END	 -->
+    
+    
+    <!-- 事务控制 -->
+	<bean id="mysqltransactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+	    <property name="dataSource" ref="mysql_DataSource" />
+    </bean>
+	<tx:advice id="mySqlTxAdvice" transaction-manager="mysqltransactionManager">
+		<tx:attributes>
+			<tx:method name="trans*" propagation="REQUIRED"  rollback-for="Exception"/>
+		</tx:attributes>
+	</tx:advice>
+	
+	<!-- 配置哪些类的方法需要进行事务管理 -->
+	<aop:config proxy-target-class="true" expose-proxy="true">
+		<aop:pointcut id="txPointcut" expression="execution(* com.Service..*.*(..))" />
+		<aop:advisor advice-ref="mySqlTxAdvice" pointcut-ref="txPointcut"/>
+	</aop:config>
+	<!-- 事务处理    end  -->
+	
 
-
+	
 	
 	</beans>
