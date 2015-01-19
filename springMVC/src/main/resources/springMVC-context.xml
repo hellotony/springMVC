@@ -19,26 +19,32 @@
        
        <!-- freemarker   基本配置         BEGIN-->
        <!-- 设置freeMarker的配置文件路径 -->
-		<bean id="freemarkerConfiguration"
+		 <bean id="freemarkerConfiguration"
 			class="org.springframework.beans.factory.config.PropertiesFactoryBean">
 			<property name="location" value="classpath:freemarker.properties" />
-		</bean>
+		 </bean>
 	
-		<bean id="freemarkerConfig" class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer">
+		 <bean id="freemarkerConfig" class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer">
 				<property name="templateLoaderPath" value="/"/>
 			    <property name="freemarkerVariables">
 			        <map>
 			            <entry key="xml_escape" value-ref="fmXmlEscape"/>
 			        </map>
 			        </property>
-	    </bean>
+			        <property name="freemarkerSettings">
+			        <props>
+			        <prop key="defaultEncoding">UTF-8</prop>
+			        </props>
+			        </property>
+	     </bean>
 
-       <bean id="fmXmlEscape" class="freemarker.template.utility.XmlEscape"/>
-			<bean id="viewResolver" class="org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver">
-			    <property name="cache" value="true"/>
-			    <property name="prefix" value="/"/>
-			    <property name="suffix" value=".ftl"/>
-			</bean>
+        <bean id="fmXmlEscape" class="freemarker.template.utility.XmlEscape"/>
+    	<bean id="viewResolver" class="org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver">
+		    <property name="cache" value="true"/>
+		    <property name="prefix" value="/"/>
+		    <property name="suffix" value=".ftl"/>
+		    <property name="contentType" value="text/html;charset=gb2312"></property>
+		</bean>
 
 	
 	<!-- freemarker 基本配置     END -->

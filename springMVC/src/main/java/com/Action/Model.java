@@ -1,7 +1,5 @@
 package com.Action;
 
-import javax.annotation.Resource;
-
 import org.springframework.stereotype.Component;
 
 @Component
