@@ -7,6 +7,7 @@
 
 	<mappers>
 		<mapper resource="ModelMapper.xml"/>
+		<mapper resource="system/permission/mapper/sys_user.xml" />
 	</mappers>
 
 </configuration>

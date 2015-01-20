@@ -43,10 +43,8 @@
 		    <property name="cache" value="true"/>
 		    <property name="prefix" value="/"/>
 		    <property name="suffix" value=".ftl"/>
-		    <property name="contentType" value="text/html;charset=gb2312"></property>
+		    <property name="contentType" value="text/html;charset=utf-8"></property>
 		</bean>
-
-	
 	<!-- freemarker 基本配置     END -->
 			           
            

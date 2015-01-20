@@ -17,7 +17,7 @@ public class Text {
 		model.addAttribute("name", "freemaker is successful");
 		service.add();
 		
-		return "/testFreemarker";
+		return "/system/permission/login";
 	}
 
 }
